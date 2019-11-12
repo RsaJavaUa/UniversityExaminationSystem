@@ -1,7 +1,7 @@
-drop schema if exists university_examination;
+drop schema if exists university_examination_test;
 
-create schema university_examination character set utf8 collate utf8_general_ci;
-use university_examination;
+create schema university_examination_test character set utf8 collate utf8_general_ci;
+use university_examination_test;
 
 CREATE TABLE speciality
 (
@@ -93,29 +93,14 @@ INSERT INTO exam_student_rating (exam_id, student_id, mark) VALUES
 (11, 3, 'C'),
 (12, 3, 'C');
 
-#
-# use university_examination;
-#
-# DROP TABLE exam_student_rating;
-#
-# CREATE TABLE exam_student_rating
-# (
-#     id           INT AUTO_INCREMENT NOT NULL ,
-#     student_id   INT,
-#     exam_id INT,
-#     mark         VARCHAR(10),
-#     PRIMARY KEY (id),
-#     FOREIGN KEY (exam_id) REFERENCES exam (id) ON DELETE CASCADE ,
-#     FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE CASCADE
-);
 # # for me
 # select * from student
 #                   inner join exam_student_rating as rating
 #                              on student.id = rating.student_id
 #                   inner join exam
 #                              on rating.id = exam.id;
-#
-#
+# 
+# 
 # select s.id, s.last_name, s.first_name, s.email, s.stud_password, s.role, sp.speciality_name, e.exam_name,
 #        rating.mark  from student as s
 #                              inner join exam_student_rating as rating
