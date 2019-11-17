@@ -1,19 +1,12 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en"/>
+<fmt:setBundle basename="message"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Students</title>
-    <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
-    <style>
-        .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #f5f5f5;
-        }
-    </style>
+    <c:import url="components/head.jsp"/>
 </head>
 
 <body>
@@ -42,7 +35,7 @@
 </nav>
 
 <div class="container">
-    <h2>Students</h2>
+    <h2><fmt:message key="student.title.body"/><br></h2>
 
     <c:choose>
         <c:when test="${not empty studentsList}">
@@ -81,11 +74,9 @@
 </div>
 
 <footer class="footer">
-    <p>footer content</p>
+   <c:import url="components/footer.jsp"/>
 </footer>
 
-<script src="webjars/jquery/3.4.1/jquery.js"></script>
-<script src="webjars/bootstrap/4.3.1/js/bootstrap.js"></script>
 
 </body>
 
