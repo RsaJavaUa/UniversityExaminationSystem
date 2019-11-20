@@ -28,7 +28,7 @@
     </div>
     <a class="nav-link disabled" href="#">Disabled</a>
 
-    <ul class="form-inline my-2 my-lg-0">
+    <ul class="nav navbar navbar-right">
         <li><a href="/login.do">Login</a></li>
     </ul>
 
