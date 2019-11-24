@@ -23,7 +23,7 @@
        aria-haspopup="true" aria-expanded="false">
         Exams
     </a>
-    <c:forEach var="exam" items="${examList}" varStatus="loop">
+    <c:forEach var="exam" items="${exams}" varStatus="loop">
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="/${exam.id}"> ${exam.name}</a>
 

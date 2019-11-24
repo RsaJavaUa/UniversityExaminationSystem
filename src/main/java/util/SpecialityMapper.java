@@ -11,9 +11,12 @@ public class SpecialityMapper {
     private SpecialityDao specialityDao = new SpecialityDao();
     private Map<String, Long> specialityNameIdMap;
 
-    public Long getSpecialityIdByName(String specialityName) {
+    public SpecialityMapper() {
         specialityNameIdMap = new HashMap<>();
         specialityDao.getAll().forEach(spec -> specialityNameIdMap.put(spec.getName(), spec.getId()));
+    }
+
+    public Long getSpecialityIdByName(String specialityName) {
         return specialityName == null ? returnDefault() : specialityNameIdMap.get(specialityName);
     }
 

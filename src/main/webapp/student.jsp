@@ -35,7 +35,7 @@
 </nav>
 
 <div class="container">
-    <h2><fmt:message key="student.title.body"/><br></h2>
+    <h2><fmt:message key="user.title.body"/><br></h2>
 
     <c:choose>
         <c:when test="${not empty studentsList}">
@@ -50,15 +50,15 @@
                     <td></td>
                 </tr>
                 </thead>
-                <c:forEach var="student" items="${studentsList}" varStatus="loop">
+                <c:forEach var="user" items="${studentsList}" varStatus="loop">
 
                     <tr>
                         <td> ${loop.count}</td>
-                        <td>${student.firstName}</td>
-                        <td>${student.lastName}</td>
-                        <td>${student.email}</td>
-                        <td>${student.specialityName}</td>
-                        <td><a href="/deletestudent/${student.id}">Delete</a>
+                        <td>${user.firstName}</td>
+                        <td>${user.lastName}</td>
+                        <td>${user.email}</td>
+                        <td>${user.specialityName}</td>
+                        <td><a href="/deletestudent/${user.id}">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>

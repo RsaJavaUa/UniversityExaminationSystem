@@ -3,7 +3,7 @@ package dao;
 import dao.interfaces.AbstractDao;
 import dao.interfaces.ResultSetMapper;
 import entities.Exam;
-import entities.Student;
+import entities.User;
 import enums.Mark;
 import org.apache.log4j.Logger;
 import persistance.ConnectionFactory;
@@ -28,9 +28,9 @@ public class ExamDao extends AbstractDao<Exam> {
             "INNER JOIN student as s ON esr.student_id = s.id" +
             "WHERE e.id=?";
     private static final String SELECT_MARKS_AND_STUD_BY_ID = "select s.id, s.last_name, s.first_name,  s.speciality_id, " +
-            "exam.exam_name, est.mark  from exam_student_rating as est inner join exam on" +
-            "est.exam_id = exam.id" +
-            "inner join student as s on est.student_id = s.id where exam.id=?";
+            "e.exam_name, est.mark from exam_student_rating as est inner join exam as e on " +
+            "est.exam_id = e.id " +
+            "inner join student as s on est.student_id = s.id where e.id=?";
     private static final String INSERT_EXAM = "INSERT INTO exam(exam_name, date_of_exam, speciality_id VALUES (?, ?, ?)";
     private static final String INSERT_EXAM_MARK = "INSERT INTO exam_student_rating" +
             " (student_id, exam_id, mark) VALUES (?, ?, ?)";
@@ -42,10 +42,10 @@ public class ExamDao extends AbstractDao<Exam> {
 
     private SpecialityMapper specialityMapper = new SpecialityMapper();
 
-    private Function<ResultSet, Map<Student, Mark>> mapToStudentMark = rs -> {
-        Map<Student, Mark> result = new HashMap<>();
+    private Function<ResultSet, Map<User, Mark>> mapToStudentMark = rs -> {
+        Map<User, Mark> result = new HashMap<>();
         try {
-            result.put(new Student().setId(rs.getLong("s.id"))
+            result.put(new User().setId(rs.getLong("s.id"))
                             .setFirstName(rs.getString("s.first_name"))
                             .setLastName(rs.getString("s.last_name"))
                             .setSpecialityName(
@@ -70,7 +70,7 @@ public class ExamDao extends AbstractDao<Exam> {
         return all;
     }
 
-    private Map<Student, Mark> setStudentAndMarkByID(Long id) {
+    private Map<User, Mark> setStudentAndMarkByID(Long id) {
         try {
             PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(SELECT_MARKS_AND_STUD_BY_ID);
             preparedStatement.setLong(1, id);

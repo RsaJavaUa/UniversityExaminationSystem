@@ -10,7 +10,7 @@ CREATE TABLE speciality
     PRIMARY KEY (id)
 );
 
-CREATE TABLE student
+CREATE TABLE user
 (
     id            INT AUTO_INCREMENT NOT NULL,
     first_name    VARCHAR(255),
@@ -42,7 +42,7 @@ CREATE TABLE exam_student_rating
     mark         VARCHAR(10),
     PRIMARY KEY (id),
     FOREIGN KEY (exam_id) REFERENCES exam (id) ON DELETE CASCADE ,
-    FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE CASCADE
+    FOREIGN KEY (student_id) REFERENCES user (id) ON DELETE CASCADE
 );
 
 INSERT INTO speciality (speciality_name)
@@ -65,7 +65,7 @@ VALUES ('Math', 1, 1573207200000),
        ('History', 4, 1573666400000),
        ('Phylosophy', 4, 1573639200000);
 
-INSERT INTO student (first_name, last_name, speciality_id, email, stud_password, role)
+INSERT INTO user (first_name, last_name, speciality_id, email, stud_password, role)
 VALUES ('Petya', 'Vorobushkin', 1, 'petya_vor@ynd.com', '1', 'USER'),
        ('Vasiay', 'Gorb', 2, 'gorb@da.net', '1', 'USER'),
        ('Katia', 'Damova', 3, 'katia_dam@gmail.com', '1', 'USER'),
@@ -106,18 +106,18 @@ INSERT INTO exam_student_rating (exam_id, student_id, mark) VALUES
 #     mark         VARCHAR(10),
 #     PRIMARY KEY (id),
 #     FOREIGN KEY (exam_id) REFERENCES exam (id) ON DELETE CASCADE ,
-#     FOREIGN KEY (student_id) REFERENCES student (id) ON DELETE CASCADE
+#     FOREIGN KEY (student_id) REFERENCES user (id) ON DELETE CASCADE
 );
 # # for me
-# select * from student
+# select * from user
 #                   inner join exam_student_rating as rating
-#                              on student.id = rating.student_id
+#                              on user.id = rating.student_id
 #                   inner join exam
 #                              on rating.id = exam.id;
 #
 #
 # select s.id, s.last_name, s.first_name, s.email, s.stud_password, s.role, sp.speciality_name, e.exam_name,
-#        rating.mark  from student as s
+#        rating.mark  from user as s
 #                              inner join exam_student_rating as rating
 #                                         on s.id = rating.student_id
 #                              inner join exam as e
@@ -127,7 +127,7 @@ INSERT INTO exam_student_rating (exam_id, student_id, mark) VALUES
 # where s.id = 1;
 # # select specialities and exam_marks for all students;
 # select s.id, sp.speciality_name, e.exam_name,
-#        rating.mark  from student as s
+#        rating.mark  from user as s
 #                              inner join exam_student_rating as rating
 #                                         on s.id = rating.student_id
 #                              inner join exam as e

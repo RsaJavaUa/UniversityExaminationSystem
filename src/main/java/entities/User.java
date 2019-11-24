@@ -12,7 +12,7 @@ import java.util.Map;
 @Data
 @ToString(exclude = "examNamesMarks")
 @Accessors(chain = true)
-public class Student {
+public class User {
     private Long id;
     private String firstName;
     private String lastName;

@@ -3,7 +3,7 @@ package dao;
 import dao.interfaces.AbstractDao;
 import dao.interfaces.ResultSetMapper;
 import dao.interfaces.StatementMapper;
-import entities.Student;
+import entities.User;
 import enums.Mark;
 import enums.Role;
 import org.apache.log4j.Logger;
@@ -23,8 +23,8 @@ import java.util.function.Function;
 
 import static util.RoleMapper.getRoleByString;
 
-public class StudentDao extends AbstractDao<Student> {
-    private static final Logger LOGGER = Logger.getLogger(StudentDao.class);
+public class UserDao extends AbstractDao<User> {
+    private static final Logger LOGGER = Logger.getLogger(UserDao.class);
 
     private static final String SELECT_STUDENT_BY_ID = "SELECT * FROM student as s inner join speciality as sp" +
             " on s.speciality_id = sp.id WHERE s.id=?";
@@ -61,7 +61,7 @@ public class StudentDao extends AbstractDao<Student> {
 
     private SpecialityMapper specialityMapper = new SpecialityMapper();
 
-    private ResultSetMapper<Student> mapToStudent = rs -> new Student().setId(rs.getLong("id"))
+    private ResultSetMapper<User> mapToStudent = rs -> new User().setId(rs.getLong("id"))
             .setLastName(rs.getString("last_name"))
             .setFirstName(rs.getString("first_name"))
             .setEmail(rs.getString("email"))
@@ -92,8 +92,8 @@ public class StudentDao extends AbstractDao<Student> {
     }
 
     @Override
-    public List<Student> getAll() {
-        List<Student> all = getAll(SELECT_ALL_STUDENTS, mapToStudent);
+    public List<User> getAll() {
+        List<User> all = getAll(SELECT_ALL_STUDENTS, mapToStudent);
         all.forEach(student -> {
             try {
                 student.setExamNamesMarks(getMarksAndExams(student.getId()));
@@ -105,25 +105,25 @@ public class StudentDao extends AbstractDao<Student> {
     }
 
     @Override
-    public boolean deleteEntity(Student entity) {
+    public boolean deleteEntity(User entity) {
         return createUpdate(DELETE_BY_ID, preparedStatement
                 -> preparedStatement.setLong(1, removeOtherEntitiesLinks(entity).getId()));
     }
 
-    public void deleteEntityByEmail(Student student) {
-        getStudentsByEmail(student)
+    public void deleteEntityByEmail(User user) {
+        getStudentsByEmail(user)
                 .forEach(element -> createUpdate(DELETE_BY_ID, ps -> ps.setLong(1, element.getId())));
     }
 
     @Override
-    public boolean saveEntity(Student entity) {
+    public boolean saveEntity(User entity) {
         return createUpdate(SQL_INSERT, ps -> {
             setPreparedStatementStudent(ps, entity);
         });
     }
 
     @Override
-    public boolean updateEntity(Student entity) {
+    public boolean updateEntity(User entity) {
         return createUpdate(UPDATE, ps -> {
             ps.setLong(7, entity.getId());
             setPreparedStatementStudent(ps, entity);
@@ -131,15 +131,15 @@ public class StudentDao extends AbstractDao<Student> {
     }
 
     @Override
-    public Optional<Student> getEntityById(Long id) {
+    public Optional<User> getEntityById(Long id) {
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement prepStatement = ConnectionFactory.getPreparedStatement(SELECT_STUDENT_BY_ID)) {
             prepStatement.setLong(1, id);
             ResultSet resultSet = prepStatement.executeQuery();
             resultSet.next();
-            Student student = mapToStudent.map(resultSet);
-            student.setExamNamesMarks(getMarksAndExams(student.getId()));
-            return Optional.of(student);
+            User user = mapToStudent.map(resultSet);
+            user.setExamNamesMarks(getMarksAndExams(user.getId()));
+            return Optional.of(user);
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
@@ -147,33 +147,29 @@ public class StudentDao extends AbstractDao<Student> {
         }
     }
 
-    private void setPreparedStatementStudent(PreparedStatement ps, Student entity) {
+    private void setPreparedStatementStudent(PreparedStatement ps, User entity) {
         try {
             ps.setString(1, Optional.of(entity.getFirstName()).orElse(null));
             ps.setString(2, Optional.of(entity.getLastName()).orElse(null));
             ps.setLong(3, specialityMapper.getSpecialityIdByName(entity.getSpecialityName()));
             ps.setString(4, entity.getEmail());
             ps.setString(5, entity.getPassword());
-            ps.setString(6, Role.USER.name());
+            ps.setString(6, Role.STUDENT.name());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
     }
 
-    private <T> T setObject(T object) {
-        return object == null ? null : object;
-    }
-
-    private List<Student> getStudentsByEmail(Student student) {
-        StatementMapper<Student> getStudentsByFieldsMapper = ps -> {
-            ps.setString(1, student.getEmail());
+    private List<User> getStudentsByEmail(User user) {
+        StatementMapper<User> getStudentsByFieldsMapper = ps -> {
+            ps.setString(1, user.getEmail());
         };
-        List<Student> all = getAll(SELECT_BY_FIELDS, getStudentsByFieldsMapper, mapToStudent);
+        List<User> all = getAll(SELECT_BY_FIELDS, getStudentsByFieldsMapper, mapToStudent);
         return all.size() > 0 ? all : Collections.emptyList();
     }
 
-    private Student removeOtherEntitiesLinks(Student student) {
-        student.setSpecialityName(null);
-        return student;
+    private User removeOtherEntitiesLinks(User user) {
+        user.setSpecialityName(null);
+        return user;
     }
 }

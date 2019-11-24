@@ -15,7 +15,7 @@ public abstract class AbstractDao<T> implements DaoInterface<T> {
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class);
 
     public List<T> getAll(String query, ResultSetMapper<T> resultSetMapper) {
-        List<T> result = Collections.emptyList();
+        List<T> result = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {

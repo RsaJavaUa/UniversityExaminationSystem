@@ -11,7 +11,7 @@ public class RoleMapper {
 
     static {
         roleStringMap.put("ADMIN", Role.ADMIN);
-        roleStringMap.put("USER", Role.USER);
+        roleStringMap.put("USER", Role.STUDENT);
     }
 
     public static Role getRoleByString(String role) {

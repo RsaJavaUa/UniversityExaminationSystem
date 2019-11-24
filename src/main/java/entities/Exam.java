@@ -14,5 +14,5 @@ public class Exam {
     private String name;
     private String specialityName;
     private Long dateExam;
-    private Map<Student, Mark> studentMarkMap = new HashMap<>();
+    private Map<User, Mark> studentMarkMap = new HashMap<>();
 }

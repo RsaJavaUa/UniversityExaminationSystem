@@ -9,7 +9,7 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="en"/>
 <fmt:setBundle basename="message"/>
-<title><fmt:message key="student.title"/></title>
+<title><fmt:message key="user.title"/></title>
 <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
 <style>
     .footer {
