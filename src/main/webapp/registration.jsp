@@ -1,15 +1,17 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="en"/>
-<fmt:setBundle basename="message"/>
-<!DOCTYPE html>
 <html>
 <head>
-    <title><fmt:message key="registration.title"/></title>
-    <c:import url="components/head.jsp"/>
+    <title>Title</title>
+    <c:import url="../components/head.jsp"/>
+
 </head>
 <body>
+<c:import url="../components/header.jsp"/>
+<%--main content of the page--%>
+
 <form action="/login" method="get">
     <button type="Submit">Go To Login Page</button>
 </form>
@@ -70,5 +72,9 @@
         </div>
     </div>
 </div>
+<%--end of the content--%>
+<footer class="footer">
+    <c:import url="../components/footer.jsp"/>
+</footer>
 </body>
 </html>

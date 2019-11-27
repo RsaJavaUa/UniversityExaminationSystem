@@ -19,7 +19,7 @@ public class ExamServlet extends HttpServlet {
 
     private void forwardListStudents(HttpServletRequest req, HttpServletResponse resp, List<User> studentsList)
             throws ServletException, IOException {
-        String nextJSPadress = "/student.jsp";
+        String nextJSPadress = "/exam.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSPadress);
         req.setAttribute("studentsList", studentsList);
         dispatcher.forward(req, resp);

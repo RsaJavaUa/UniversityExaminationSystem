@@ -2,7 +2,6 @@ package controllers;
 
 import dao.ExamDao;
 import entities.Exam;
-import entities.Speciality;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

@@ -44,7 +44,7 @@ public class AuthenticationFilter implements Filter {
 
         if (user == null) {
             LOGGER.info("User not logged");
-            httpServletResponse.sendRedirect("/registration");
+            httpServletResponse.sendRedirect("/login");
             return;
         }
 

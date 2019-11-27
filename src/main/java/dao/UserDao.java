@@ -58,6 +58,7 @@ public class UserDao extends AbstractDao<User> {
             "SET  first_name =?, last_name =?, speciality_id =?, email =?, stud_password =?, role =?" +
             " WHERE id=?";
     private static final String DELETE_BY_ID = "DELETE FROM student WHERE id=?";
+    private static final String SELECT_BY_LOGIN_PASSWORD = "SELECT * FROM student WHERE (email = ? ANВ stud_password=?)";
 
     private SpecialityMapper specialityMapper = new SpecialityMapper();
 
@@ -66,7 +67,7 @@ public class UserDao extends AbstractDao<User> {
             .setFirstName(rs.getString("first_name"))
             .setEmail(rs.getString("email"))
             .setPassword(rs.getString("stud_password"))
-            .setSpecialityName(rs.getString("speciality_name"))
+            .setSpecialityName(specialityMapper.fromIdToNameSpeciality(rs.getLong("speciality_id")))
             .setRole(getRoleByString(rs.getString("role")));
 
     private Function<ResultSet, Map<String, Mark>> mapExamMarks = rs -> {
@@ -159,6 +160,17 @@ public class UserDao extends AbstractDao<User> {
             LOGGER.error(e.getMessage());
         }
     }
+
+    public User getByEmailPassword(String email, String password) {
+        StatementMapper<User> getStudentsByEmailPassword = ps -> {
+            ps.setString(1, email);
+            ps.setString(2, password);
+        };
+
+        List<User> all = getAll(SELECT_BY_LOGIN_PASSWORD, getStudentsByEmailPassword, mapToStudent);
+        return all.size() > 0 ? all.get(0) : null;
+    }
+
 
     private List<User> getStudentsByEmail(User user) {
         StatementMapper<User> getStudentsByFieldsMapper = ps -> {

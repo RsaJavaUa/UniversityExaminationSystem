@@ -15,6 +15,7 @@ public abstract class AbstractDao<T> implements DaoInterface<T> {
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class);
 
     public List<T> getAll(String query, ResultSetMapper<T> resultSetMapper) {
+
         List<T> result = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(query);
@@ -40,7 +41,7 @@ public abstract class AbstractDao<T> implements DaoInterface<T> {
 
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
-            LOGGER.error("Error while creating or updating entity"+e.getMessage());
+            LOGGER.error("Error while creating or updating entity" + e.getMessage());
         }
         return false;
     }
@@ -48,9 +49,13 @@ public abstract class AbstractDao<T> implements DaoInterface<T> {
     protected List<T> getAll(String query, StatementMapper<T> statementMapper, ResultSetMapper<T> resultSetMapper) {
         List<T> result = Collections.emptyList();
         try (PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(query)) {
-            statementMapper.map(preparedStatement);
+//            statementMapper.map(preparedStatement);
+            preparedStatement.setString(1, "petya_vor@ynd.com");
+//            preparedStatement.setString(2, "1");
             ResultSet resultSet = preparedStatement.executeQuery();
-            result = setIntoList(resultSet, resultSetMapper);
+
+            List<T> ts = setIntoList(resultSet, resultSetMapper);
+            return ts;
         } catch (SQLException e) {
             LOGGER.error("Exception while getting all entities " + e.getMessage());
         }

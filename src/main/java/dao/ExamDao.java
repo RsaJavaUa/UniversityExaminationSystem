@@ -45,12 +45,14 @@ public class ExamDao extends AbstractDao<Exam> {
     private Function<ResultSet, Map<User, Mark>> mapToStudentMark = rs -> {
         Map<User, Mark> result = new HashMap<>();
         try {
-            result.put(new User().setId(rs.getLong("s.id"))
-                            .setFirstName(rs.getString("s.first_name"))
-                            .setLastName(rs.getString("s.last_name"))
-                            .setSpecialityName(
-                                    specialityMapper.fromIdToNameSpeciality(rs.getLong("s.speciality_id")))
-                    , Mark.valueOf(rs.getString("est.mark")));
+            while (rs.next()) {
+                result.put(new User().setId(rs.getLong("s.id"))
+                                .setFirstName(rs.getString("s.first_name"))
+                                .setLastName(rs.getString("s.last_name"))
+                                .setSpecialityName(
+                                        specialityMapper.fromIdToNameSpeciality(rs.getLong("s.speciality_id")))
+                        , Mark.valueOf(rs.getString("est.mark")));
+            }
         } catch (SQLException e) {
             LOGGER.info(e.getMessage());
         }

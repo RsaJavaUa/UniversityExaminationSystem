@@ -1,43 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: bronza
-  Date: 19.11.19
-  Time: 22:50
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <c:import url="components/head.jsp"/>
+    <title>Title</title>
+    <c:import url="/components/head.jsp"/>
+
 </head>
-
 <body>
-
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-
-    <a href="/" class="navbar-brand">Brand</a>
-    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-    <a class="nav-link" href="#">Link</a>
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false">
-        Dropdown
-    </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Something else here</a>
-    </div>
-    <a class="nav-link disabled" href="#">Disabled</a>
-
-    <ul class="nav navbar navbar-right">
-        <li><a href="/login.do">Login</a></li>
-    </ul>
-
-</nav>
-
+<c:import url="/components/header.jsp"/>
+<%--main content of the page--%>
 <div class="container">
     <h2><fmt:message key="user.title.body"/><br></h2>
 
@@ -77,11 +50,11 @@
     </c:choose>
 </div>
 
+
+
+<%--end of the page content--%>
 <footer class="footer">
-    <c:import url="components/footer.jsp"/>
+    <c:import url="/components/footer.jsp"/>
 </footer>
-
-
 </body>
-
 </html>
