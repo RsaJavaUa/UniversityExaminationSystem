@@ -1,4 +1,4 @@
-package controllers;
+package web.controllers;
 
 import dao.SpecialityDao;
 import dao.UserDao;
@@ -31,7 +31,7 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = setValuesToUser(req);
         userDao.saveEntity(user);
-        req.getSession().setAttribute("User", user);
+        req.getSession().setAttribute("user", user);
 //        setNextPage("/university").forward(req, resp);
         resp.sendRedirect("/university");
     }

@@ -1,4 +1,4 @@
-package controllers;
+package web.controllers;
 
 import dao.UserDao;
 import entities.User;

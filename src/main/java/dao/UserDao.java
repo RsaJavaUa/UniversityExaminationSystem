@@ -7,18 +7,13 @@ import entities.User;
 import enums.Mark;
 import enums.Role;
 import org.apache.log4j.Logger;
-import persistance.ConnectionFactory;
 import util.SpecialityMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static util.RoleMapper.getRoleByString;
@@ -58,7 +53,7 @@ public class UserDao extends AbstractDao<User> {
             "SET  first_name =?, last_name =?, speciality_id =?, email =?, stud_password =?, role =?" +
             " WHERE id=?";
     private static final String DELETE_BY_ID = "DELETE FROM student WHERE id=?";
-    private static final String SELECT_BY_LOGIN_PASSWORD = "SELECT * FROM student WHERE (email = ? ANВ stud_password=?)";
+    private static final String SELECT_BY_LOGIN_PASSWORD = "SELECT * FROM student WHERE (email = ? AND stud_password= ?)";
 
     private SpecialityMapper specialityMapper = new SpecialityMapper();
 
@@ -84,7 +79,7 @@ public class UserDao extends AbstractDao<User> {
 
     private Map<String, Mark> getMarksAndExams(Long id) throws SQLException {
         PreparedStatement preparedStatement =
-                ConnectionFactory.getPreparedStatement(SELECT_SPECIALITY_EXAMS_BY_STUDENT_ID);
+                getPreparedStatement(SELECT_SPECIALITY_EXAMS_BY_STUDENT_ID);
         if (preparedStatement != null) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -133,8 +128,8 @@ public class UserDao extends AbstractDao<User> {
 
     @Override
     public Optional<User> getEntityById(Long id) {
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement prepStatement = ConnectionFactory.getPreparedStatement(SELECT_STUDENT_BY_ID)) {
+        try (Connection connection = getConnection();
+             PreparedStatement prepStatement = getPreparedStatement(SELECT_STUDENT_BY_ID)) {
             prepStatement.setLong(1, id);
             ResultSet resultSet = prepStatement.executeQuery();
             resultSet.next();

@@ -1,4 +1,4 @@
-package controllers;
+package web.controllers;
 
 import dao.ExamDao;
 import entities.Exam;

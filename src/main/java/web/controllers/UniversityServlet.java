@@ -1,7 +1,6 @@
-package controllers;
+package web.controllers;
 
 import dao.SpecialityDao;
-import entities.Exam;
 import entities.Speciality;
 
 import javax.servlet.RequestDispatcher;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @WebServlet(urlPatterns = {"/university"})
 public class UniversityServlet extends HttpServlet {

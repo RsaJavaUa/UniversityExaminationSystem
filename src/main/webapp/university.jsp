@@ -1,15 +1,16 @@
-
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="${bundle}"/>
 <html>
 <head>
-    <title>university </title>
+    <title><fmt:message key="university.title"/></title>
     <c:import url="/components/head.jsp"/>
 
 </head>
 <body>
 <c:import url="/components/header.jsp"/>
+<div>${user}</div>
 
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="2000">
@@ -36,7 +37,7 @@
     </a>
 </div>
 <footer class="footer">
-    <c:import url="     /components/footer.jsp"/>
+    <c:import url="/components/footer.jsp"/>
 </footer>
 </body>
 </html>

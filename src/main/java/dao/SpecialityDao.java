@@ -4,7 +4,6 @@ import dao.interfaces.AbstractDao;
 import dao.interfaces.ResultSetMapper;
 import entities.Speciality;
 import org.apache.log4j.Logger;
-import persistance.ConnectionFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +29,7 @@ public class SpecialityDao extends AbstractDao<Speciality> {
     }
 
     public List<String> getAllNames() {
-        try (Statement statement = ConnectionFactory.getConnection().createStatement()) {
+        try (Statement statement = getConnection().createStatement()) {
             return  createNamesList(statement.executeQuery(SELECT_SPECIALITIES_NAMES));
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

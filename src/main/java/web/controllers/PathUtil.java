@@ -1,4 +1,4 @@
-package controllers;
+package web.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;

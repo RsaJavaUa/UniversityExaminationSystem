@@ -6,7 +6,6 @@ import entities.Exam;
 import entities.User;
 import enums.Mark;
 import org.apache.log4j.Logger;
-import persistance.ConnectionFactory;
 import util.SpecialityMapper;
 
 import java.sql.PreparedStatement;
@@ -74,7 +73,7 @@ public class ExamDao extends AbstractDao<Exam> {
 
     private Map<User, Mark> setStudentAndMarkByID(Long id) {
         try {
-            PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(SELECT_MARKS_AND_STUD_BY_ID);
+            PreparedStatement preparedStatement = getPreparedStatement(SELECT_MARKS_AND_STUD_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             return mapToStudentMark.apply(resultSet);

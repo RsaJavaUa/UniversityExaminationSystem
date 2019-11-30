@@ -1,6 +1,6 @@
-package filters;
+package web.filters;
 
-import controllers.PathUtil;
+import web.controllers.PathUtil;
 import entities.User;
 import enums.Role;
 import org.apache.log4j.Logger;
@@ -40,7 +40,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        User user = (User) httpServletReq.getSession().getAttribute("User");
+        User user = (User) httpServletReq.getSession().getAttribute("user");
 
         if (user == null) {
             LOGGER.info("User not logged");
@@ -49,7 +49,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (hasNotPermission(path, user.getRole())) {
-            httpServletResponse.sendRedirect("/403-error");
+            httpServletResponse.sendRedirect("/errors/403-error");
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);

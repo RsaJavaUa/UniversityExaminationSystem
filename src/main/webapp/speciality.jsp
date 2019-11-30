@@ -2,13 +2,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="${bundle}"/>
 <html>
 <head>
-    <title>Title</title>
+    <title>
+        <fmt:message key="speciality.title"/>
+    </title>
     <c:import url="/components/head.jsp"/>
 
 </head>
 <body>
+<fmt:message key="speciality.title"/>
 <c:import url="/components/header.jsp"/>
 <%--main content of the page--%>
 <%--THIS IS TEMPLATE OF SPECIALITY PAGE--%>
