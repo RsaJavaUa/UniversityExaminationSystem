@@ -31,7 +31,7 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = setValuesToUser(req);
         userDao.saveEntity(user);
-        req.getSession().setAttribute("user", user);
+        req.getSession().setAttribute("User", user);
 //        setNextPage("/university").forward(req, resp);
         resp.sendRedirect("/university");
     }

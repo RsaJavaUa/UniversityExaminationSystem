@@ -1,17 +1,12 @@
 package web.filters;
 
-import web.controllers.PathUtil;
 import entities.User;
 import enums.Role;
 import org.apache.log4j.Logger;
 import util.SecurityUtil;
+import web.controllers.PathUtil;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +35,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        User user = (User) httpServletReq.getSession().getAttribute("user");
+        User user = (User) httpServletReq.getSession().getAttribute("User");
 
         if (user == null) {
             LOGGER.info("User not logged");
@@ -49,7 +44,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (hasNotPermission(path, user.getRole())) {
-            httpServletResponse.sendRedirect("/errors/403-error");
+            httpServletResponse.sendRedirect("/403-error");
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);

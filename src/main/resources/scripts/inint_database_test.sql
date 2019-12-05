@@ -93,30 +93,3 @@ INSERT INTO exam_student_rating (exam_id, student_id, mark) VALUES
 (11, 3, 'C'),
 (12, 3, 'C');
 
-# # for me
-# select * from user
-#                   inner join exam_student_rating as rating
-#                              on user.id = rating.student_id
-#                   inner join exam
-#                              on rating.id = exam.id;
-# 
-# 
-# select s.id, s.last_name, s.first_name, s.email, s.stud_password, s.role, sp.speciality_name, e.exam_name,
-#        rating.mark  from user as s
-#                              inner join exam_student_rating as rating
-#                                         on s.id = rating.student_id
-#                              inner join exam as e
-#                                         on rating.id = e.id
-#                              inner join speciality as sp
-#                                         on e.speciality_id = sp.id
-# where s.id = 1;
-# # select specialities and exam_marks for all students;
-# select s.id, sp.speciality_name, e.exam_name,
-#        rating.mark  from user as s
-#                              inner join exam_student_rating as rating
-#                                         on s.id = rating.student_id
-#                              inner join exam as e
-#                                         on rating.id = e.id
-#                              inner join speciality as sp
-#                                         on e.speciality_id = sp.id
-# order by s.id;

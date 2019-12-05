@@ -1,7 +1,7 @@
 
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${locale}"/>
-<fmt:setBundle basename="${bundle}"/>
+<fmt:setLocale value="${value}"/>
+<fmt:setBundle basename="${message}"/>
 <title><fmt:message key="user.title"/></title>
 <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
 <style>

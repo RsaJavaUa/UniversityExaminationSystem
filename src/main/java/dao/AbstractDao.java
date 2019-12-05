@@ -1,27 +1,27 @@
-package dao.interfaces;
+package dao;
 
+import dao.interfaces.DaoInterface;
+import dao.interfaces.ResultSetMapper;
+import dao.interfaces.StatementMapper;
 import org.apache.log4j.Logger;
 import persistance.ConnectionFactory;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class AbstractDao<T> implements DaoInterface<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class);
 
-
     public List<T> getAll(String query, ResultSetMapper<T> resultSetMapper) {
 
         List<T> result = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = getPreparedStatement(query);
+        try (PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             result = setIntoList(resultSet, resultSetMapper);
         } catch (SQLException e) {
@@ -39,7 +39,7 @@ public abstract class AbstractDao<T> implements DaoInterface<T> {
     }
 
     public boolean createUpdate(String query, StatementMapper<T> statementMapper) {
-        try (PreparedStatement preparedStatement = getPreparedStatement(query)) {
+        try (PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(query)) {
             statementMapper.map(preparedStatement);
 
             return preparedStatement.executeUpdate() == 1;
@@ -51,9 +51,10 @@ public abstract class AbstractDao<T> implements DaoInterface<T> {
 
     protected List<T> getAll(String query, StatementMapper<T> statementMapper, ResultSetMapper<T> resultSetMapper) {
         List<T> result = Collections.emptyList();
-        try (PreparedStatement preparedStatement = getPreparedStatement(query)) {
+        try (PreparedStatement preparedStatement = ConnectionFactory.getPreparedStatement(query)) {
             statementMapper.map(preparedStatement);
-
+//            preparedStatement.setString(1, "petya_vor@ynd.com");
+//            preparedStatement.setString(2, "1");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             List<T> ts = setIntoList(resultSet, resultSetMapper);
@@ -62,17 +63,5 @@ public abstract class AbstractDao<T> implements DaoInterface<T> {
             LOGGER.error("Exception while getting all entities " + e.getMessage());
         }
         return result;
-    }
-
-    public PreparedStatement getPreparedStatement(String query) throws SQLException {
-        Connection connection = ConnectionFactory.getConnection();
-        return connection.prepareStatement(query);
-    }
-
-    public Connection getConnection() {
-
-        Connection connection = ConnectionFactory.getConnection();
-        return connection;
-
     }
 }

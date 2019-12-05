@@ -1,11 +1,10 @@
 package persistance;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.mysql.cj.jdbc.MysqlDataSource;
+import com.mysql.cj.jdbc.MysqlDataSourceFactory;
 import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,57 +14,45 @@ import java.util.Properties;
 public class ConnectionFactory {
     private final static Logger LOGGER = Logger.getLogger(ConnectionFactory.class);
 
-    private static HikariConfig config = new HikariConfig(); ;
-    private static HikariDataSource hikariDataSource;
+    private final static ConnectionFactory INSTANCE = new ConnectionFactory();
+    private static DataSource dataSource;
 
-    public static DataSource setDataSource(String fileName) {
-        Properties properties= createPropertiesByPath(fileName);
-        config.setJdbcUrl(properties.getProperty("DB.URL"));
-        config.setSchema(properties.getProperty("DB.NAME"));
-
-        config.setUsername(properties.getProperty("DB.USERNAME"));
-        config.setPassword(properties.getProperty("DB.PASSWORD"));
-        config.addDataSourceProperty("cachePrepStmts", properties.getProperty("PrepStmts"));
-        config.addDataSourceProperty("prepStmtCacheSize", properties.getProperty("CacheSize"));
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", properties.getProperty("Limit"));
-        return new HikariDataSource(config);
+    private ConnectionFactory() {
     }
 
     static {
-        Properties properties= createPropertiesByPath("db/db.properties");
-        config.setDriverClassName("com.mysql.jdbc.Driver");
-        config.setJdbcUrl(properties.getProperty("DB.URL"));
-        config.setSchema(properties.getProperty("DB.NAME"));
-        config.setUsername(properties.getProperty("DB.USERNAME"));
-        config.setPassword(properties.getProperty("DB.PASSWORD"));
-        config.addDataSourceProperty("cachePrepStmts", properties.getProperty("PrepStmts"));
-        config.addDataSourceProperty("prepStmtCacheSize", properties.getProperty("CacheSize"));
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", properties.getProperty("Limit"));
-        config.setConnectionTimeout(Long.parseLong(properties.getProperty("TIMEOUT")));
-        hikariDataSource = new HikariDataSource(config);
+        dataSource = setDataSource("/db/db.properties");
+        LOGGER.info("Datasource is created");
+    }
+
+    public static DataSource setDataSource(String propertiesFilePath) {
+        Properties properties = new Properties();
+        try {
+            properties.load(MysqlDataSourceFactory.class.getResourceAsStream(propertiesFilePath));
+            MysqlDataSource mysqlDataSource = new MysqlDataSource();
+            mysqlDataSource.setURL(properties.getProperty("DB_URL"));
+            mysqlDataSource.setDatabaseName(properties.getProperty("DB_NAME"));
+            mysqlDataSource.setCharacterEncoding(properties.getProperty("DB_CHARACTER_ENCODING"));
+            mysqlDataSource.setUser(properties.getProperty("DB_USERNAME"));
+            mysqlDataSource.setPassword(properties.getProperty("DB_PASSWORD"));
+            dataSource = mysqlDataSource;
+        } catch (IOException | SQLException e) {
+            LOGGER.error(e.getMessage() + "Error while creating datasource");
+        }
+        return dataSource;
     }
 
     public static Connection getConnection() {
         Connection connection = null;
         try {
-            connection = hikariDataSource.getConnection();
+            connection = dataSource.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Connection creation error" + e.getMessage());
         }
         return connection;
     }
 
-
-
-    private static Properties createPropertiesByPath(String fileName) {
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        String dbPropertiesPath = rootPath + fileName;
-        Properties result = new Properties();
-        try {
-            result.load(new FileInputStream(dbPropertiesPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
+    public static PreparedStatement getPreparedStatement(String query) throws SQLException {
+        return getConnection().prepareStatement(query);
     }
 }
