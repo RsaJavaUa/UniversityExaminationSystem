@@ -1,3 +1,14 @@
+Requirements:
+ 1. DB - MySql/PostgreSql
+ 2. Java version up 8.
+ 3. Maven
+ 
+ 
+ How to install:
+ 1. Clone project
+ 2. Run inint_database.sql from resources/scripts folder
+ 3. Go to link localhost:8080/university
+
 Bussiness Logic
 1) User could login  - LoginPage (LoginServlet all servlets would refactored to comands with one main dispatcher servlet)
 2) A student could register on-site. - (RegisterServlet)
